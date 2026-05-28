@@ -237,7 +237,7 @@ function initials(nombre) {
 
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydHnjhBUhXxbKHi98q31cZ_2_2Eefv531-5tnhfV430Squ8k4bm4YGmJhmcC2_Vq1u/exec';
 
-async function fetchSheet(sheetName){
+async function fetchInscritos(sheetName){
   const url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(sheetName);
   const r=await fetch(url);const t=await r.text();return JSON.parse(t.substring(47).slice(0,-2));
 }
