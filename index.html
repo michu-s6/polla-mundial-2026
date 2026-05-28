@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polla Mundial 2026 — Justo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde:#1a7a4a;--verde-claro:#2db870;--oro:#f5c518;--plata:#b0b8c1;--bronce:#cd7f32;
+    --bg:#0a0f0d;--bg2:#111a14;--bg3:#162019;--card:#1a2520;
+    --borde:rgba(255,255,255,0.07);--texto:#eef2ee;--muted:#7a9080;
+    --font-display:'Bebas Neue',sans-serif;--font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--texto);font-family:var(--font-body);min-height:100vh;}
+  header{background:var(--bg2);border-bottom:1px solid var(--borde);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .logo{display:flex;align-items:center;gap:12px;}
+  .logo-ball{width:36px;height:36px;background:var(--verde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .logo-text{font-family:var(--font-display);font-size:22px;letter-spacing:1px;color:var(--texto);}
+  .logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+  .header-right{display:flex;align-items:center;gap:16px;}
+  .live-badge{display:flex;align-items:center;gap:6px;background:rgba(45,184,112,0.12);border:1px solid rgba(45,184,112,0.3);color:var(--verde-claro);font-size:12px;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:1px;}
+  .live-dot{width:7px;height:7px;background:var(--verde-claro);border-radius:50%;animation:pulse 1.5s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+  .refresh-btn{background:transparent;border:1px solid var(--borde);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:var(--font-body);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s;}
+  .refresh-btn:hover{border-color:var(--verde);color:var(--verde-claro);}
+  .stats-bar{background:var(--bg3);border-bottom:1px solid var(--borde);padding:1rem 2rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap;}
+  .stat{display:flex;flex-direction:column;gap:2px;}
+  .stat-val{font-family:var(--font-display);font-size:26px;color:var(--verde-claro);line-height:1;}
+  .stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;}
+  .stat-divider{width:1px;height:36px;background:var(--borde);}
+  .fase-badge{margin-left:auto;background:rgba(245,197,24,0.1);border:1px solid rgba(245,197,24,0.25);color:var(--oro);font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;}
+  main{max-width:900px;margin:0 auto;padding:2rem;}
+  .inscritos-section{margin-bottom:2rem;}
+  .inscritos-titulo{font-family:var(--font-display);font-size:20px;letter-spacing:1px;color:var(--texto);margin-bottom:1rem;}
+  .inscritos-grid{display:flex;flex-wrap:wrap;gap:8px;}
+  .inscrito-chip{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--borde);border-radius:20px;padding:5px 12px 5px 6px;font-size:13px;color:var(--texto);}
+  .inscrito-av{width:24px;height:24px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--verde-claro);flex-shrink:0;}
+  .inscrito-nuevo{border-color:rgba(45,184,112,0.4);background:rgba(45,184,112,0.06);}
+  .podio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:2rem;align-items:end;}
+  .podio-card{background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:1.5rem 1rem;text-align:center;transition:transform 0.2s;}
+  .podio-card:hover{transform:translateY(-2px);}
+  .podio-card.oro{border-color:rgba(245,197,24,0.3);background:linear-gradient(160deg,#1e2318 0%,#1a2510 100%);padding-top:2rem;}
+  .podio-card.plata{order:-1;}
+  .medalla{font-size:28px;margin-bottom:8px;display:block;}
+  .podio-pos{font-family:var(--font-display);font-size:48px;line-height:1;margin-bottom:8px;}
+  .podio-card.oro .podio-pos{color:var(--oro);}
+  .podio-card.plata .podio-pos{color:var(--plata);}
+  .podio-card.bronce .podio-pos{color:var(--bronce);}
+  .podio-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px;margin:0 auto 10px;}
+  .podio-card.oro .podio-avatar{background:rgba(245,197,24,0.15);color:var(--oro);}
+  .podio-card.plata .podio-avatar{background:rgba(176,184,193,0.15);color:var(--plata);}
+  .podio-card.bronce .podio-avatar{background:rgba(205,127,50,0.15);color:var(--bronce);}
+  .podio-nombre{font-weight:600;font-size:15px;margin-bottom:2px;color:var(--texto);}
+  .podio-area{font-size:12px;color:var(--muted);margin-bottom:10px;}
+  .podio-pts{font-family:var(--font-display);font-size:32px;color:var(--verde-claro);}
+  .podio-pts-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .premio-chip{display:inline-block;background:rgba(45,184,112,0.1);border:1px solid rgba(45,184,112,0.2);color:var(--verde-claro);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-top:8px;}
+  .podio-card.oro .premio-chip{background:rgba(245,197,24,0.1);border-color:rgba(245,197,24,0.25);color:var(--oro);}
+  .tabla-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+  .tabla-titulo{font-family:var(--font-display);font-size:20px;letter-spacing:1px;color:var(--texto);}
+  .search-wrap{position:relative;}
+  .search-input{background:var(--card);border:1px solid var(--borde);border-radius:8px;color:var(--texto);font-family:var(--font-body);font-size:13px;padding:7px 12px 7px 32px;outline:none;width:200px;transition:border-color 0.2s;}
+  .search-input:focus{border-color:var(--verde);}
+  .search-input::placeholder{color:var(--muted);}
+  .search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+  .tabla{width:100%;border-collapse:collapse;}
+  .tabla thead th{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:500;padding:8px 12px;text-align:left;border-bottom:1px solid var(--borde);}
+  .tabla thead th.num{text-align:right;}
+  .tabla tbody tr{border-bottom:1px solid var(--borde);transition:background 0.15s;}
+  .tabla tbody tr:hover{background:rgba(255,255,255,0.02);}
+  .tabla tbody tr.destacado{background:rgba(245,197,24,0.04);}
+  .tabla td{padding:12px;font-size:14px;vertical-align:middle;}
+  .rank-num{font-family:var(--font-display);font-size:18px;color:var(--muted);width:36px;text-align:center;}
+  .rank-1{color:var(--oro)}.rank-2{color:var(--plata)}.rank-3{color:var(--bronce)}
+  .player-cell{display:flex;align-items:center;gap:10px;}
+  .avatar-sm{width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--verde-claro);border:1px solid var(--borde);flex-shrink:0;}
+  .player-info{display:flex;flex-direction:column;gap:1px;}
+  .player-nombre{font-weight:500;font-size:14px;color:var(--texto);}
+  .player-area{font-size:12px;color:var(--muted);}
+  .pts-cell{font-family:var(--font-display);font-size:20px;color:var(--verde-claro);text-align:right;}
+  .pts-max{font-size:11px;color:var(--muted);font-family:var(--font-body);}
+  .barra-wrap{width:100px;}
+  .barra-bg{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+  .barra-fill{height:100%;background:var(--verde);border-radius:2px;transition:width 0.6s ease;}
+  .delta{font-size:12px;font-weight:500;text-align:right;min-width:40px;}
+  .delta.up{color:var(--verde-claro)}.delta.same{color:var(--muted)}.delta.down{color:#e05c5c}
+  .ultimo-badge{display:inline-block;background:rgba(224,92,92,0.1);border:1px solid rgba(224,92,92,0.2);color:#e05c5c;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle;}
+  footer{max-width:900px;margin:0 auto;padding:1rem 2rem 3rem;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);border-top:1px solid var(--borde);margin-top:1rem;}
+  .hidden{display:none;}
+  @media(max-width:600px){.barra-wrap{display:none}.podio{grid-template-columns:1fr}.podio-card.plata{order:0}header{padding:0 1rem}main{padding:1rem}.stats-bar{padding:1rem;gap:1rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-ball">&#x26BD;</div>
+    <div>
+      <div class="logo-text">POLLA MUNDIAL 2026</div>
+      <div class="logo-sub">Justo &nbsp;&middot;&nbsp; USA / MEX / CAN</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live-badge"><div class="live-dot"></div>EN VIVO</div>
+    <button class="refresh-btn" onclick="cargarTodo()">&#x21BB; Actualizar</button>
+  </div>
+</header>
+<div class="stats-bar">
+  <div class="stat"><span class="stat-val" id="stat-participantes">&#8212;</span><span class="stat-label">Inscritos</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-val" id="stat-partidos">0</span><span class="stat-label">Partidos jugados</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-val" id="stat-lider">&#8212;</span><span class="stat-label">L&iacute;der</span></div>
+  <div class="stat-divider"></div>
+  <div class="stat"><span class="stat-val" id="stat-pts-lider">0</span><span class="stat-label">Puntos l&iacute;der</span></div>
+  <div class="fase-badge" id="fase-badge">&#x23F3; Pre-torneo</div>
+</div>
+<main>
+  <div class="inscritos-section">
+    <div class="inscritos-titulo">INSCRITOS <span id="inscritos-count" style="font-size:16px;color:var(--muted)"></span></div>
+    <div class="inscritos-grid" id="inscritos-grid"><span style="font-size:13px;color:var(--muted)">Cargando...</span></div>
+  </div>
+  <div class="podio">
+    <div class="podio-card plata"><span class="medalla">&#x1F948;</span><div class="podio-pos">2</div><div class="podio-avatar" id="av2">&#8212;</div><div class="podio-nombre" id="p2-nombre">&#8212;</div><div class="podio-area" id="p2-area">&#8212;</div><div class="podio-pts" id="p2-pts">0</div><div class="podio-pts-label">puntos</div><div class="premio-chip">$30 USD</div></div>
+    <div class="podio-card oro"><span class="medalla">&#x1F947;</span><div class="podio-pos">1</div><div class="podio-avatar" id="av1">&#8212;</div><div class="podio-nombre" id="p1-nombre">&#8212;</div><div class="podio-area" id="p1-area">&#8212;</div><div class="podio-pts" id="p1-pts">0</div><div class="podio-pts-label">puntos</div><div class="premio-chip">&#x1F3C6; $50 USD</div></div>
+    <div class="podio-card bronce"><span class="medalla">&#x1F949;</span><div class="podio-pos">3</div><div class="podio-avatar" id="av3">&#8212;</div><div class="podio-nombre" id="p3-nombre">&#8212;</div><div class="podio-area" id="p3-area">&#8212;</div><div class="podio-pts" id="p3-pts">0</div><div class="podio-pts-label">puntos</div><div class="premio-chip">$15 USD</div></div>
+  </div>
+  <div class="tabla-header">
+    <div class="tabla-titulo">RANKING COMPLETO</div>
+    <div class="search-wrap">
+      <span class="search-icon">&#x1F50D;</span>
+      <input class="search-input" type="text" placeholder="Buscar participante..." oninput="filtrarTabla(this.value)">
+    </div>
+  </div>
+  <table class="tabla">
+    <thead><tr><th style="width:48px">#</th><th>Participante</th><th class="num">Pts</th><th>Progreso</th><th class="num">Variaci&oacute;n</th></tr></thead>
+    <tbody id="tabla-body"><tr><td colspan="5" style="text-align:center;padding:3rem;color:var(--muted);font-size:14px">&#x23F3; El torneo comienza el 11 de junio.</td></tr></tbody>
+  </table>
+  <div style="margin-top:2rem;background:var(--card);border:1px solid var(--borde);border-radius:12px;padding:1.25rem;display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center">
+    <span style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:500">Premios</span>
+    <span style="font-size:13px">&#x1F947; <strong style="color:var(--oro)">$50</strong> <span style="color:var(--muted)">1er lugar</span></span>
+    <span style="font-size:13px">&#x1F948; <strong style="color:var(--plata)">$30</strong> <span style="color:var(--muted)">2do lugar</span></span>
+    <span style="font-size:13px">&#x1F949; <strong style="color:var(--bronce)">$15</strong> <span style="color:var(--muted)">3er lugar</span></span>
+    <span style="font-size:13px">&#x1F3AF; <strong style="color:var(--verde-claro)">$20</strong> <span style="color:var(--muted)">mejor predicci&oacute;n especial</span></span>
+    <span style="font-size:13px">&#x1F396; <strong style="color:#e05c5c">$5</strong> <span style="color:var(--muted)">&uacute;ltimo lugar</span></span>
+  </div>
+</main>
+<footer>
+  <span>Actualizado: <span id="last-update">&#8212;</span></span>
+  <span>Justo &#x26BD; Mundial 2026</span>
+</footer>
+<script>
+var SHEET_ID = '1t7qe-PZu9LUVBrwUYukJ4cgZsmEOn5WB4ZW61Hse0No';
+var APPS_URL = 'https://script.google.com/macros/s/AKfycbydHnjhBUhXxbKHi98q31cZ_2_2Eefv531-5tnhfV430Squ8k4bm4YGmJhmcC2_Vq1u/exec';
+var MAX_PTS = 228;
+
+function ini(n){return n.split(' ').map(function(w){return w[0];}).filter(Boolean).slice(0,2).join('').toUpperCase();}
+
+async function cargarInscritos(){
+  try{
+    var r=await fetch(APPS_URL);
+    var data=await r.json();
+    var ins=data.inscritos||[];
+    document.getElementById('stat-participantes').textContent=ins.length;
+    document.getElementById('inscritos-count').textContent='('+ins.length+')';
+    var g=document.getElementById('inscritos-grid');
+    if(!ins.length){g.innerHTML='<span style="font-size:13px;color:var(--muted)">Aun no hay inscritos.</span>';return;}
+    g.innerHTML=ins.map(function(p,i){
+      return '<div class="inscrito-chip'+(i>=ins.length-3?' inscrito-nuevo':'')+'"><div class="inscrito-av">'+ini(p.nombre)+'</div><span>'+p.nombre+'</span></div>';
+    }).join('');
+  }catch(e){console.error('Error inscritos:',e);}
+}
+
+async function cargarRanking(){
+  try{
+    var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Ranking';
+    var r=await fetch(url);
+    var t=await r.text();
+    var json=JSON.parse(t.substring(47).slice(0,-2));
+    var datos=(json.table.rows||[]).map(function(r){
+      return {nombre:(r.c[0]&&r.c[0].v)||'',area:(r.c[1]&&r.c[1].v)||'',pts:Math.round((r.c[2]&&r.c[2].v)||0),delta:((r.c[3]&&r.c[3].v)||'0').toString()};
+    }).filter(function(d){return d.nombre;}).sort(function(a,b){return b.pts-a.pts;});
+    if(!datos.length)return;
+    var campos=[['av1','p1-nombre','p1-area','p1-pts'],['av2','p2-nombre','p2-area','p2-pts'],['av3','p3-nombre','p3-area','p3-pts']];
+    campos.forEach(function(c,i){
+      if(!datos[i])return;
+      document.getElementById(c[0]).textContent=ini(datos[i].nombre);
+      document.getElementById(c[1]).textContent=datos[i].nombre;
+      document.getElementById(c[2]).textContent=datos[i].area;
+      document.getElementById(c[3]).textContent=datos[i].pts;
+    });
+    document.getElementById('stat-lider').textContent=datos[0].nombre.split(' ')[0];
+    document.getElementById('stat-pts-lider').textContent=datos[0].pts;
+    document.getElementById('fase-badge').textContent='Ranking en juego';
+    var ul=datos[datos.length-1];
+    var tb=document.getElementById('tabla-body');tb.innerHTML='';
+    datos.forEach(function(p,i){
+      var pos=i+1,pct=Math.round(p.pts/MAX_PTS*100),rc=pos<=3?'rank-'+pos:'',es=p===ul;
+      var dc=p.delta.charAt(0)==='+' ?'up':p.delta==='0'?'same':'down';
+      var di=p.delta.charAt(0)==='+' ?'&#x2191;':p.delta==='0'?'&#x2014;':'&#x2193;';
+      tb.innerHTML+='<tr class="'+(pos<=3?'destacado':'')+'" data-nombre="'+p.nombre.toLowerCase()+' '+p.area.toLowerCase()+'"><td><div class="rank-num '+rc+'">'+pos+'</div></td><td><div class="player-cell"><div class="avatar-sm">'+ini(p.nombre)+'</div><div class="player-info"><span class="player-nombre">'+p.nombre+(es?'<span class="ultimo-badge">ULTIMO</span>':'')+'</span><span class="player-area">'+p.area+'</span></div></div></td><td class="pts-cell">'+p.pts+' <span class="pts-max">/ '+MAX_PTS+'</span></td><td><div class="barra-wrap"><div class="barra-bg"><div class="barra-fill" style="width:'+pct+'%"></div></div></div></td><td class="delta '+dc+'">'+di+' '+(Math.abs(parseInt(p.delta))||'&#x2014;')+'</td></tr>';
+    });
+  }catch(e){console.error('Error ranking:',e);}
+}
+
+function filtrarTabla(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('#tabla-body tr[data-nombre]').forEach(function(tr){
+    tr.classList.toggle('hidden',!tr.dataset.nombre.includes(q));
+  });
+}
+
+async function cargarTodo(){
+  document.getElementById('last-update').textContent=new Date().toLocaleString('es-CL',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
+  await Promise.all([cargarInscritos(),cargarRanking()]);
+}
+
+cargarTodo();
+setInterval(cargarTodo,60000);
+</script>
+</body>
+</html>
