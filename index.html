@@ -234,19 +234,23 @@ const COL_AREA  = 3;
 
 function initials(nombre) {
   return nombre.split(' ').map(w => w[0]).filter(Boolean).slice(0,2).join('').toUpperCase();
+
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydHnjhBUhXxbKHi98q31cZ_2_2Eefv531-5tnhfV430Squ8k4bm4YGmJhmcC2_Vq1u/exec';
+
+async function fetchSheet(sheetName){
+  const url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(sheetName);
+  const r=await fetch(url);const t=await r.text();return JSON.parse(t.substring(47).slice(0,-2));
 }
 
-async function fetchSheet(sheetName) {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
-  const resp = await fetch(url);
-  const text = await resp.text();
-  return JSON.parse(text.substring(47).slice(0,-2));
+async function fetchInscritos(){
+  const r=await fetch(APPS_SCRIPT_URL);
+  return await r.json();
 }
 
 async function cargarInscritos() {
   try {
-    const json = await fetchSheet('Form Responses 1');
-    const rows = (json.table.rows || []).filter(r => r.c && r.c[COL_ALIAS] && r.c[COL_ALIAS].v);
+const data=await fetchInscritos();
+const ins=(data.inscritos||[]);
 
     const inscritos = rows.map(r => ({
       nombre: (r.c[COL_ALIAS].v || '').toString().trim(),
